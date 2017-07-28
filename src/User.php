@@ -161,6 +161,18 @@ class User
             }
     }
     
+    
+     public static function saveNewUserPassword(PDO $conn, $userPassword, $userID) {
+            $newHashedPassword = password_hash($userPassword, PASSWORD_BCRYPT);
+            $stmt = $conn->prepare('UPDATE Users SET hash_pass=:userPass WHERE id= :userId');
+			$result = $stmt->execute([ 'userPass' => $newHashedPassword, 'userId'=> $userID]);
+			if ($result) {
+			    return true;
+		    } else { 
+	       return false;
+            }
+    }
+    
             
     public function saveToDB(PDO $conn)
 	{

@@ -16,6 +16,29 @@ include 'src/User.php';
 <body>
 
 <div class="container">
+    
+    
+    
+    
+
+     <br>
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+      <a href="twitter_profile.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-home"></div> Mój profil</button></a>
+    </div>
+    <div class="btn-group" role="group">
+      <a href="twitter_sendmessage.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-send"></div> Wyślij wiadomość</button></a>
+    </div>
+    <div class="btn-group" role="group">
+      <a href="twitter_createpost.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-paperclip"></div> Napisz post</button></a>
+    </div>
+    <div class="btn-group" role="group">
+      <a href="twitter_logout.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-log-out"></div> Wyloguj się</button></a>
+    </div>
+  </div>
+    <br><br>
+        
+    
     <div class="row">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 
@@ -29,22 +52,22 @@ include 'src/User.php';
                            value="<?= $_SESSION["userID"] ?>">
                 </div>
                 <div class="form-group">
-                    <label for="">Nazwa użytkownika</label>
+                    <label for="">Nowa nazwa użytkownika</label>
                     <input type="text" class="form-control" name="userName" id="userName" placeholder="Nazwa użytkownika"
                            value="<?= $_SESSION["userName"] ?>">
                 </div>
                 <div class="form-group">
-                    <label for="">Email użytkownika</label>
+                    <label for="">Nowy e-mail</label>
                     <input type="text" class="form-control" name="userEmail" id="userEmail"
                            placeholder="Opis użytkownika"
                            value="<?= $_SESSION["userEmail"]; ?>">
                 </div>
                 <div class="form-group">
-                    <label for="">Hasło użytkownika</label>
+                    <label for="">Nowe hasło</label>
                     <input type="password" class="form-control" name="userPassword" id="userPassword"
-                           placeholder="Hasło użytkownika">
+                           placeholder="">
                 </div>
-                <button type="submit" class="btn btn-primary">Edytuj</button>
+                <button type="submit" class="btn btn-primary">Zmień swoje dane</button>
             </form>
             <?php
             if ($_SERVER['REQUEST_METHOD'] === "POST") {
@@ -71,9 +94,12 @@ include 'src/User.php';
                         echo "Ten e-mail jest już używany przez innego użytkownika";
                     }
                  }
+                 
+                 if ($_SESSION['userPassword'] != $newUserPassword && !empty($newUserPassword)) {
+                     USER::saveNewUserPassword($conn, $newUserPassword, $_SESSION["userID"]);
+                     echo "Hasło zostało zmienione";
+                 }
                      
-                 
-                 
             }
             ?>
             

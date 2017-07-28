@@ -25,6 +25,17 @@ include 'src/User.php';
 <body>
 
 <div class="container">
+    <br>
+    
+           <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                    <a href="twitter_register.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-asterisk"></div> Rejestracja</button></a>
+                </div>
+              
+            </div>
+        </div>
+    <br>
+    
     <div class="row">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
         </div>
@@ -58,12 +69,15 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
    $user = new User();
     
    $_SESSION["userEmail"] = $_POST['userEmail'];
+   $_SESSION['userPassword'] = $_POST['userPassword'];
  
     $_SESSION["userID"] = $user->getIdByUserEmail($conn, $_SESSION["userEmail"]);
     $user_id = $_SESSION["userID"];
     $_SESSION["userName"] = $user->getUsernameByID($conn, $_SESSION["userID"]);
+    
     if (password_verify($_POST['userPassword'], 
-    $user->getPasswordHashByID($conn, $_SESSION["userID"]))) {
+    
+        $user->getPasswordHashByID($conn, $_SESSION["userID"]))) {
         } else{
         echo "Blad logowania!";
     }
