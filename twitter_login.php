@@ -32,8 +32,8 @@ include 'src/User.php';
             <form action="" method="post" role="form">
                 <legend>Logowanie użytkownika</legend>
                 <div class="form-group">
-                    <label for="">Email użytkownika</label>
-                    <input type="text" class="form-control" name="userEmail" id="userEmail" placeholder="Email użytkownika">
+                    <label for="">E-mail użytkownika</label>
+                    <input type="email" class="form-control" name="userEmail" id="userEmail" placeholder="Nazwa użytkownika">
                 </div>
                 <div class="form-group">
                     <label for="">Hasło użytkownika</label>
@@ -55,23 +55,18 @@ include 'src/User.php';
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     
-
-    $_SESSION["email"] = $_POST['userEmail'];
-    $user = new User();
-    $_SESSION["userID"] = $user->getIdByEmail($conn, $_SESSION["email"]);
+   $user = new User();
+    
+   $_SESSION["userEmail"] = $_POST['userEmail'];
+ 
+    $_SESSION["userID"] = $user->getIdByUserEmail($conn, $_SESSION["userEmail"]);
     $user_id = $_SESSION["userID"];
-    $_SESSION["username"] = $user->getUsernameByID($conn, $_SESSION["userID"]);
-
+    $_SESSION["userName"] = $user->getUsernameByID($conn, $_SESSION["userID"]);
     if (password_verify($_POST['userPassword'], 
     $user->getPasswordHashByID($conn, $_SESSION["userID"]))) {
-        
         } else{
         echo "Blad logowania!";
     }
-} else {
-    //header("Location: twitter_login.php");
-    //die();
-    
 }
         
         

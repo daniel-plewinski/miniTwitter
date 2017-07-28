@@ -33,10 +33,73 @@ class User
 	    	return null;
 	    }
 	}
+    
+    
+    static function checkUsernameIfUnique($conn, $userID, $newName) {
+        $result = $conn->query('SELECT username FROM Users');
+    
+        if ($result->rowCount() > 0) {
+           $ar = [];
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $ar[] = $row["username"];
+            }
 
-	static function getIdByEmail($conn, $email) {
+            if (in_array($newName, $ar)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+    
+    
+    static function checkEmailIfUnique($conn, $userID, $newEmail) {
+        $result = $conn->query('SELECT email FROM Users');
+		
+        if ($result->rowCount() > 0) {
+               $ar = [];
+                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    $ar[] = $row["email"];
+                }
+
+                if (in_array($newEmail, $ar)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+    }
+    
+    
+    
+    static function getUserEmailByID($conn, $userID) {
+		$stmt = $conn->prepare('SELECT email FROM Users WHERE id = :userid');
+		$stmt->execute([ 'userid' => $userID ]);
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		if ($result) {
+		    return $result["email"];
+	    } else {
+	    	return null;
+	    }
+	}
+    
+
+	static function getIdByUserName($conn, $username) {
+		$stmt = $conn->prepare('SELECT id FROM Users WHERE username = :username');
+		$stmt->execute([ 'username' => $username ]);
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		if ($result) {
+		    return $result["id"];
+	    } else {
+	    	return null;
+	    }
+	}
+    
+    
+    static function getIdByUserEmail($conn, $email) {
 		$stmt = $conn->prepare('SELECT id FROM Users WHERE email = :email');
-		$stmt->execute([ 'email' => $email ]);
+		$stmt->execute([ 'email' => $email]);
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 		if ($result) {
 		    return $result["id"];
@@ -72,8 +135,34 @@ class User
 	public function setUsername($newUsername) {
 		$this->username = $newUsername;
 	}
-
-	public function saveToDB(PDO $conn)
+    
+    public static function changeUsername($newUsername) {
+		$this->username = $newUsername;
+	}
+    
+    public static function saveNewUsername(PDO $conn, $userName, $userID) {
+			$stmt = $conn->prepare('UPDATE Users SET username=:username WHERE id= :userId');
+			$result = $stmt->execute([ 'username' => $userName, 'userId'=> $userID]);
+			if ($result) {
+			    return true;
+		    } else { 
+	       return false;
+            }
+    }
+    
+    
+     public static function saveNewUserEmail(PDO $conn, $userEmail, $userID) {
+			$stmt = $conn->prepare('UPDATE Users SET email=:userEmail WHERE id= :userId');
+			$result = $stmt->execute([ 'userEmail' => $userEmail, 'userId'=> $userID]);
+			if ($result) {
+			    return true;
+		    } else { 
+	       return false;
+            }
+    }
+    
+            
+    public function saveToDB(PDO $conn)
 	{
 	    if ($this->id == -1) {
 			/* Saving new user to DB */

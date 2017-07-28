@@ -30,21 +30,23 @@ include 'src/User.php';
      <br>
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
     <div class="btn-group" role="group">
-      <a href="twitter_useredit.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-pencil"></div> Edit</button></a>
+      <a href="twitter_useredit.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-pencil"></div> Edytuj profil</button></a>
     </div>
     <div class="btn-group" role="group">
-      <a href="twitter_sendmessage.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-send"></div> Send message</button></a>
+      <a href="twitter_sendmessage.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-send"></div> Wyślij wiadomość</button></a>
     </div>
     <div class="btn-group" role="group">
-      <a href="twitter_createpost.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-paperclip"></div> Create post</button></a>
+      <a href="twitter_createpost.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-paperclip"></div> Napisz post</button></a>
     </div>
     <div class="btn-group" role="group">
-      <a href="twitter_logout.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-log-out"></div> Logout</button></a>
+      <a href="twitter_logout.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-log-out"></div> Wyloguj się</button></a>
     </div>
   </div>
     <br><br>
     
 <?php
+
+echo '<h4>Witaj <strong>' . $_SESSION["userName"] . '</strong>!</h4>';
 
 
 $sql = "SELECT * FROM Posts WHERE user_id = :user_id";
@@ -58,7 +60,7 @@ try {
 
 if ($stmt->rowCount() > 0) {
   echo '<div class="panel panel-default">';
-  echo '<div class="panel-heading">Panel heading</div>';
+  echo '<div class="panel-heading">Twoje Posty</div>';
   echo '<table class="table">';
   echo '<tr><th>id</th><th>Posty</th><th>Data</th></tr>';
   foreach($result as $row) {
