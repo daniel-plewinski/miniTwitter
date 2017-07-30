@@ -1,8 +1,15 @@
 <?php
 session_start();
+
+if(!isset($_SESSION["userID"])){
+    header("location: twitter_login.php");
+    die();
+}
+
 include 'config.php';
 include 'src/User.php';
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -16,15 +23,10 @@ include 'src/User.php';
 <body>
 
 <div class="container">
-    
-    
-    
-    
-
      <br>
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
     <div class="btn-group" role="group">
-      <a href="twitter_profile.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-home"></div> Mój profil</button></a>
+      <a href="twitter_wall.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-home"></div> Mój profil</button></a>
     </div>
     <div class="btn-group" role="group">
       <a href="twitter_sendmessage.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-send"></div> Wyślij wiadomość</button></a>

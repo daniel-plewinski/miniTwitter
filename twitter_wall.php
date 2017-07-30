@@ -2,6 +2,11 @@
 session_start();
 ob_start();
 
+if(!isset($_SESSION["userID"])){
+    header("location: twitter_login.php");
+    die();
+}
+
 
 include 'config.php';
 include 'src/User.php';
@@ -26,7 +31,6 @@ include 'src/User.php';
     
 
 
-
      <br>
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
     <div class="btn-group" role="group">
@@ -36,7 +40,7 @@ include 'src/User.php';
       <a href="twitter_sendmessage.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-send"></div> Wyślij wiadomość</button></a>
     </div>
     <div class="btn-group" role="group">
-      <a href="twitter_createpost.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-paperclip"></div> Napisz post</button></a>
+      <a href="twitter_addtweet.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-paperclip"></div> Napisz post</button></a>
     </div>
     <div class="btn-group" role="group">
       <a href="twitter_logout.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-log-out"></div> Wyloguj się</button></a>
@@ -49,10 +53,10 @@ include 'src/User.php';
 echo '<h4>Witaj <strong>' . $_SESSION["userName"] . '</strong>!</h4>';
 
 
-$sql = "SELECT * FROM Posts WHERE user_id = :user_id";
+$sql = "SELECT * FROM Tweets";
 try {
   $stmt = $conn->prepare($sql);
-  $stmt->execute(['user_id' => $_SESSION["userID"]]);
+  $stmt->execute();
   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
   echo $e->getMessage();
@@ -60,11 +64,25 @@ try {
 
 if ($stmt->rowCount() > 0) {
   echo '<div class="panel panel-default">';
-  echo '<div class="panel-heading">Twoje Posty</div>';
+  echo '<div class="panel-heading">Tablica</div>';
   echo '<table class="table">';
-  echo '<tr><th>id</th><th>Posty</th><th>Data</th></tr>';
+  echo '<tr><th>Użytkownik</th><th>Tweet</th><th>Data</th></tr>';
   foreach($result as $row) {
-    echo '<tr><td>' . $row["id"] . '</td><td>' . $row["description"] . '</td><td>' . $row["data"] . "</td></tr>";
+      
+     
+        try {
+          $sql1 = "SELECT username FROM Users WHERE id =" .  $row['user_id'] . " LIMIT 1";
+          $result1 = $conn->query($sql1);
+          $result1 = $result1->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result1 as $value) {
+               $username1 = $value['username'];
+            }
+                 
+        } catch (PDOException $e) {
+          echo $e->getMessage();
+        }
+      
+    echo '<tr><td>' . $username1 . '</td><td>' . $row["description"] . '</td><td>' . $row["data"] . "</td></tr>";
   }
   echo '</table>';
   echo '</div>';

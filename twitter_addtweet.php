@@ -12,16 +12,37 @@
         <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     </head>
     <div class="container">
+        
+        
+        
+
+     <br>
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+      <a href="twitter_useredit.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-pencil"></div> Edytuj profil</button></a>
+    </div>
+    <div class="btn-group" role="group">
+      <a href="twitter_sendmessage.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-send"></div> Wyślij wiadomość</button></a>
+    </div>
+    <div class="btn-group" role="group">
+      <a href="twitter_createpost.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-paperclip"></div> Napisz post</button></a>
+    </div>
+    <div class="btn-group" role="group">
+      <a href="twitter_logout.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-log-out"></div> Wyloguj się</button></a>
+    </div>
+  </div>
+    <br><br>
+        
         <div class="row">
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <form action="zadanie1.php" method="post" role="form">
-                    <legend>Dodawnie postu</legend>
+                <form action="" method="post" role="form">
+                    <legend>Dodawnie tweeta</legend>
 
                     <div class="form-group">
-                        <label for="comment">Comment:</label>
+                        <label for="comment">Treść:</label>
                         <textarea class="form-control" rows="5" id="comment"></textarea>
                     </div>
 

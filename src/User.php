@@ -150,6 +150,15 @@ class User
             }
     }
     
+//    public function saveNewUsername1(PDO $conn, $userName, $userID) {
+//            if ($this->id == -1) {
+//                $stmt = $conn->prepare('UPDATE Users SET username=:username WHERE id= :userId');
+//                $result = $stmt->execute([ 'username' => $userName, 'userId'=> $userID]);
+//            } else {
+//                return false;
+//            }
+//    }
+    
     
      public static function saveNewUserEmail(PDO $conn, $userEmail, $userID) {
 			$stmt = $conn->prepare('UPDATE Users SET email=:userEmail WHERE id= :userId');
@@ -177,20 +186,26 @@ class User
     public function saveToDB(PDO $conn)
 	{
 	    if ($this->id == -1) {
+            
+            try {
 			/* Saving new user to DB */
 			$stmt = $conn->prepare('INSERT INTO Users(username, email, hash_pass) VALUES (:username, :email, :pass)');
-			$result = $stmt->execute([ 'username' => $this->username, 'email'=> $this->email, 'pass' => $this->hashPass ]);
+            $result = $stmt->execute([ 'username' => $this->username, 'email'=> $this->email, 'pass' => $this->hashPass ]); }
+            catch (PDOException $e ){
+            return false;
+            }
+            
 			if ($result !== false) {
 				$this->id = $conn->lastInsertId();
 			    return true;
-		    }
+		    } 
 		} else {
 			$stmt = $conn->prepare('UPDATE Users SET username=:username, email=:email, hash_pass=:hash_pass');
 			$result = $stmt->execute([ 'username' => $this->username, 'email' => $this->email, 'hash_pass' => $this->hashPass ] );
 	        if ($result === true) {
 	            return true;
 	     	}
-		}
+		} 
 	    return false;
 	}
 
@@ -208,6 +223,5 @@ class User
 	}
 
 }
-
 
 ?>
