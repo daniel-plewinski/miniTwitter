@@ -1,51 +1,103 @@
 <?php
-//pobierz listę id i tytułu filmów
+session_start();
+ob_start();
+
+if(!isset($_SESSION["userID"])){
+    header("location: twitter_wall.php");
+    die();
+}
+
 include 'config.php';
-  include 'src/User.php';
+include 'src/User.php';
+include 'src/Comment.php';
+include 'src/Tweet.php';
+
+include 'template/header.php';
 
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Zadanie 1 - modyfikacja danych</title>
-    <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-</head>
-<body>
+
+<div class="container">
 
 <?php
 
-include 'config.php';
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+  
+    if (isset($_GET['twit']) && is_numeric(($_GET['twit']))) {
+        $twitId = $_GET['twit'];
+        $_SESSION['twitID'] = $twitId;
+        $tweet = Tweet::getTweetbyID($conn, $twitId);      
 
-$postID = $_GET["postID"];
+        $tweetAuthorId = Tweet::getAuthorIdByTweetbyID($conn, $twitId);
+        $tweetAuthorName = USER::getUsernameByID($conn, $tweetAuthorId);
+        $tweetDate = Tweet::getTweetDateByTweetbyID($conn, $twitId);
+        
+        $commentsAr = Comment::getCommentsByTweetId($conn, $twitId);
+     
+        
+        
+        echo "<strong>$tweetAuthorName</strong> pisze w dniu $tweetDate:";
+        echo "<h3>$tweet</h3>";
 
-$sql = "SELECT * FROM Comments WHERE post_id = :post_id ";
-try {
-  $stmt = $conn->prepare($sql);
-  $stmt->execute(['post_id' => $postID]);
-  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo $e->getMessage();
-}
-
-if ($stmt->rowCount() > 0) {
-	echo '<div class="panel panel-default">';
-	echo '<div class="panel-heading">Panel heading</div>';
-	echo '<table class="table">';
-	echo '<tr><td>id</td><td>user name</td><td>description</td><td>data</td></tr>';
-    foreach($result as $row) {
-        echo '<tr><td>' . $row["id"] . "</td><td>" . $row["user_id"]. "</td><td>" . $row["description"] . "</td><td>" . $row["data"] . "</td></tr>";
+        
+        
+       echo "<ul>";
+     
+       foreach ($commentsAr as $comment) {
+              $commentAuthorId = Comment::getAuthorIdByCommentID($conn, $comment['id']);
+        $commentAuthorName = USER::getUsernameByID($conn, $commentAuthorId);
+            echo "<li>" ;
+            echo $comment['comment_content'] . "<br>";
+            echo "<i>Napisany przez <strong>" . $commentAuthorName . "</strong> w dniu " . $comment['comment_date'] . "</i>";
+            echo "</li>";
+       }
+   
+       echo "</ul>";
+       
+       
+    } else {
+      header("location: twitter_wall.php");
+       
     }
-    echo '</table>';
-    echo '</div>';
+} else {
+    header("location: twitter_wall.php");
 }
-else {
-    echo "Brak wyników";
-}
+
+
 ?>
+    
+    
+       <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+
+            </div>
+            <div>
+                <form action="" method="post" role="form">
+                    <legend>Dodaj komentarz</legend>
+                    <div class="form-group">
+                        <label for="content">Treść komentarza:</label>
+                        <textarea class="form-control" rows="5" name="content" id="content"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                </form>
+            </div>
+    
+                 <?php
+                    if ($_SERVER['REQUEST_METHOD'] === "POST") {
+
+                       if (!empty($_POST['content'])) {
+                            $commentContent = $_POST['content'];
+                            $comment = new Comment();
+                            $comment->setCommentContent($commentContent); 
+                            $comment->setUserId($_SESSION['userID']);
+                            $comment->setTweetId($_SESSION['twitID']);
+                            $comment->saveCommentToDB($conn);
+
+                       echo "Tweet został opublikowany";
+                       } else {
+                           echo "Tweet nie może być pusty";
+                       }
+                    }
+                ?>
+</div>
 
 </body>
 </html>

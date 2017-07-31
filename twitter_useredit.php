@@ -8,39 +8,13 @@ if(!isset($_SESSION["userID"])){
 
 include 'config.php';
 include 'src/User.php';
+
+include 'template/header.php';
 ?>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Twitter - Save</title>
-    <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-</head>
-<body>
 
 <div class="container">
-     <br>
-  <div class="btn-group btn-group-justified" role="group" aria-label="...">
-    <div class="btn-group" role="group">
-      <a href="twitter_wall.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-home"></div> Mój profil</button></a>
-    </div>
-    <div class="btn-group" role="group">
-      <a href="twitter_sendmessage.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-send"></div> Wyślij wiadomość</button></a>
-    </div>
-    <div class="btn-group" role="group">
-      <a href="twitter_createpost.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-paperclip"></div> Napisz post</button></a>
-    </div>
-    <div class="btn-group" role="group">
-      <a href="twitter_logout.php"><button type="button" class="btn btn-default"><div class="glyphicon glyphicon-log-out"></div> Wyloguj się</button></a>
-    </div>
-  </div>
-    <br><br>
-        
-    
+            
     <div class="row">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 

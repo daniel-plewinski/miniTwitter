@@ -136,9 +136,6 @@ class User
 		$this->username = $newUsername;
 	}
     
-    public static function changeUsername($newUsername) {
-		$this->username = $newUsername;
-	}
     
     public static function saveNewUsername(PDO $conn, $userName, $userID) {
 			$stmt = $conn->prepare('UPDATE Users SET username=:username WHERE id= :userId');
@@ -149,15 +146,6 @@ class User
 	       return false;
             }
     }
-    
-//    public function saveNewUsername1(PDO $conn, $userName, $userID) {
-//            if ($this->id == -1) {
-//                $stmt = $conn->prepare('UPDATE Users SET username=:username WHERE id= :userId');
-//                $result = $stmt->execute([ 'username' => $userName, 'userId'=> $userID]);
-//            } else {
-//                return false;
-//            }
-//    }
     
     
      public static function saveNewUserEmail(PDO $conn, $userEmail, $userID) {
@@ -223,5 +211,3 @@ class User
 	}
 
 }
-
-?>

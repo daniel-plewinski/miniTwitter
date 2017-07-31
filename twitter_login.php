@@ -3,7 +3,7 @@
 session_start();
 
 if(isset($_SESSION["userID"])){
-    header("location: twitter_profile.php");
+    header("location: twitter_wall.php");
     die();
 }
 
