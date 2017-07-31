@@ -56,6 +56,7 @@ class Message {
             }
     }
     
+    
     public static function showOutbox ($conn, $fromId) {
          
             $stmt = $conn->prepare('SELECT * FROM Messages WHERE from_id = ?');
@@ -67,9 +68,27 @@ class Message {
                 return null;
             }
     }
+    
+    public static function showMessageById ($conn, $id) {
+         
+            $stmt = $conn->prepare('SELECT * FROM Messages WHERE id = ? ');
+            $result = $stmt->execute([$id]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($result) {
+                return $result;
+            } else {
+                return null;
+            }
+    }
 
-    public static function markAsRead ($messageId) {
+    public static function markAsRead ($conn, $messageId) {
         
+        try {
+			$stmt = $conn->prepare('UPDATE Messages SET is_read = 1 WHERE id = ?');
+            $result = $stmt->execute([$messageId]);
+            }
+              catch (PDOException $e ){
+            }
     }
     
     public function sendMessage ($conn) {    

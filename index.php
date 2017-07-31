@@ -6,22 +6,6 @@ if(isset($_SESSION['userID'])){
     header("location: twitter_profile.php");
 }
 
-if (is_array($_POST) && $_POST) {
-    include 'config.php';
-    include 'src/User.php';
-    $userName = $_POST['userName'];
-    $userEmail = $_POST['userEmail'];
-    $userPassword = $_POST['userPassword'];
-    $user = new User();
-    $user->setUsername($userName);
-    $user->setEmail($userEmail);
-    $user->setPassword($userPassword);
-    if ($user->validate($conn)) {
-        $user->saveToDB($conn);
-    } else {
-        echo "Podałeś złe dane!!!!";
-    }
-}
 ?>
 
         <div class="container">
@@ -35,8 +19,5 @@ if (is_array($_POST) && $_POST) {
                 </div>
             </div>
         </div>
-
     </body>
-    <?php include 'template/footer.php'; ?>
-    
 </html>

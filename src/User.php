@@ -37,13 +37,11 @@ class User
     
     static function checkUsernameIfUnique($conn, $userID, $newName) {
         $result = $conn->query('SELECT username FROM Users');
-    
         if ($result->rowCount() > 0) {
            $ar = [];
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $ar[] = $row["username"];
             }
-
             if (in_array($newName, $ar)) {
                 return false;
             } else {
@@ -54,14 +52,12 @@ class User
     
     
     static function checkEmailIfUnique($conn, $userID, $newEmail) {
-        $result = $conn->query('SELECT email FROM Users');
-		
+        $result = $conn->query('SELECT email FROM Users');	
         if ($result->rowCount() > 0) {
                $ar = [];
                 while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                     $ar[] = $row["email"];
                 }
-
                 if (in_array($newEmail, $ar)) {
                     return false;
                 } else {
@@ -108,9 +104,9 @@ class User
 	    }
 	}
 
-	static function getPasswordHashByID($conn, $userID) {
-		$stmt = $conn->prepare('SELECT hash_pass FROM Users WHERE id = :userid');
-		$stmt->execute([ 'userid' => $userID ]);
+	static function getPasswordHashByEmail($conn, $email) {
+		$stmt = $conn->prepare('SELECT hash_pass FROM Users WHERE email = :email');
+		$stmt->execute([ 'email' => $email ]);
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 		if ($result) {
 		    return $result["hash_pass"];
@@ -123,14 +119,6 @@ class User
 		$this->email = $newEmail;
 	}
 
-	public function validate($conn)
-	{
-		# if (filter_var($email_a, FILTER_VALIDATE_EMAIL))
-		# Czy password ma 8 znakow
-		# Czy username ma przynajmniej 3 znaki etc.
-		# Czy email sie nie powtarza!!!
-		return true;
-	}
 
 	public function setUsername($newUsername) {
 		$this->username = $newUsername;
@@ -196,18 +184,4 @@ class User
 		} 
 	    return false;
 	}
-
-	public function delete(PDO $conn)
-	{
-	    if ($this->id != -1) {
-			$stmt = $conn->prepare('DELETE FROM Users WHERE id=:id'); $result = $stmt->execute(['id' => $this->id]);
-			if ($result === true) {
-	            $this->id = -1;
-	            return true;
-	        }
-	        return false;
-	    }
-	    return true;
-	}
-
 }

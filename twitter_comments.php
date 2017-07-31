@@ -7,10 +7,10 @@ if(!isset($_SESSION["userID"])){
     die();
 }
 
-include 'config.php';
-include 'src/User.php';
-include 'src/Comment.php';
-include 'src/Tweet.php';
+require 'config.php';
+require 'src/User.php';
+require 'src/Comment.php';
+require 'src/Tweet.php';
 
 include 'template/header.php';
 
@@ -32,39 +32,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $tweetDate = Tweet::getTweetDateByTweetbyID($conn, $twitId);
         
         $commentsAr = Comment::getCommentsByTweetId($conn, $twitId);
-     
-        
         
         echo "<strong>$tweetAuthorName</strong> pisze w dniu $tweetDate:";
         echo "<h3>$tweet</h3>";
-
         
-        
-       echo "<ul>";
+        echo "<ul>";
      
-       foreach ($commentsAr as $comment) {
-              $commentAuthorId = Comment::getAuthorIdByCommentID($conn, $comment['id']);
-        $commentAuthorName = USER::getUsernameByID($conn, $commentAuthorId);
+        foreach ($commentsAr as $comment) {
+            $commentAuthorId = Comment::getAuthorIdByCommentID($conn, $comment['id']);
+            $commentAuthorName = USER::getUsernameByID($conn, $commentAuthorId);
             echo "<li>" ;
             echo $comment['comment_content'] . "<br>";
             echo "<i>Napisany przez <strong>" . $commentAuthorName . "</strong> w dniu " . $comment['comment_date'] . "</i>";
             echo "</li>";
        }
-   
-       echo "</ul>";
-       
+            echo "</ul>";     
        
     } else {
       header("location: twitter_wall.php");
-       
     }
 } else {
     header("location: twitter_wall.php");
-}
-
-
+    }
 ?>
-    
     
        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 
@@ -80,24 +70,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 </form>
             </div>
     
-                 <?php
-                    if ($_SERVER['REQUEST_METHOD'] === "POST") {
+<?php
+   if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
-                       if (!empty($_POST['content'])) {
-                            $commentContent = $_POST['content'];
-                            $comment = new Comment();
-                            $comment->setCommentContent($commentContent); 
-                            $comment->setUserId($_SESSION['userID']);
-                            $comment->setTweetId($_SESSION['twitID']);
-                            $comment->saveCommentToDB($conn);
-
-                       echo "Tweet został opublikowany";
-                       } else {
-                           echo "Tweet nie może być pusty";
-                       }
-                    }
-                ?>
-</div>
-
+      if (!empty($_POST['content'])) {
+           $commentContent = $_POST['content'];
+           $comment = new Comment();
+           $comment->setCommentContent($commentContent); 
+           $comment->setUserId($_SESSION['userID']);
+           $comment->setTweetId($_SESSION['twitID']);
+           $comment->saveCommentToDB($conn);
+           echo "Tweet został opublikowany";
+      } else {
+          echo "Tweet nie może być pusty";
+      }
+   }
+?>
+    </div>
 </body>
 </html>

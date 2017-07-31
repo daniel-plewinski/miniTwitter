@@ -7,14 +7,11 @@ if(!isset($_SESSION["userID"])){
     die();
 }
 
-
-
 require 'src/Tweet.php';
 require 'src/User.php';
 require 'config.php';
 include 'template/header.php';
 
-include 'template/header.php';
 ?>
     <div class="container">
         
@@ -54,12 +51,6 @@ include 'template/header.php';
             </div>
         </div>
     </div>
-
-</body>
-</html>
-
-
-
 
 </body>
 </html>

@@ -25,10 +25,6 @@ if(!isset($_SESSION["userID"])){
         header("location: twitter_wall.php");
         $_SESSION['selfError'] = true;
     }
-
-
-
-
 ?>
 
 <div class="container">
@@ -49,36 +45,27 @@ if(!isset($_SESSION["userID"])){
                 </form>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                <?php
-                    if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
-                       if (!empty($_POST['content'])) {
-                            $content = $_POST['content'];
-                            
-                            
-                                $message = new Message;
-                                $message->setFromId($_SESSION['userID']);
-                                $message->setToId($toId);
-                                $message->setContent($content);
-                                $message->sendMessage($conn);
-                                echo "Wiadomość została przesłana";
-                                
+<?php
+    if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
-                       } else {
-                           echo "Wiadomość nie może być pusta";
-                       }
-                    }
-                ?>
+       if (!empty($_POST['content'])) {
+            $content = $_POST['content'];                         
+
+            $message = new Message;
+            $message->setFromId($_SESSION['userID']);
+            $message->setToId($toId);
+            $message->setContent($content);
+            $message->sendMessage($conn);
+
+            echo "Wiadomość została przesłana";
+        } else {
+           echo "Wiadomość nie może być pusta";
+       }
+    }
+?>
             </div>
         </div>
     </div>
-
 </body>
 </html>
-
-
-
-
-</body>
-</html>
-

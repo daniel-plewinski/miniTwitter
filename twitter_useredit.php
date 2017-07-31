@@ -6,8 +6,8 @@ if(!isset($_SESSION["userID"])){
     die();
 }
 
-include 'config.php';
-include 'src/User.php';
+require 'config.php';
+require 'src/User.php';
 
 include 'template/header.php';
 ?>
@@ -45,46 +45,43 @@ include 'template/header.php';
                 </div>
                 <button type="submit" class="btn btn-primary">Zmień swoje dane</button>
             </form>
-            <?php
-            if ($_SERVER['REQUEST_METHOD'] === "POST") {
-                $newUserName = $_POST['userName'];
-                $newUserEmail = $_POST['userEmail'];
-                $newUserPassword = $_POST['userPassword'];
-                
-                 if ($_SESSION["userName"] != $newUserName) {
-                     
-                    if (USER::checkUsernameIfUnique($conn, $_SESSION["userID"], $newUserName)) {
-                        USER::saveNewUsername($conn, $newUserName, $_SESSION["userID"]);
-                        echo "Nazwa użytkownika została zmieniona na " . $newUserName;
-                    } else {
-                        echo "Ta nazwa użytkownika już istnieje<br>";
-                    }
-                 }
-                        
-                  if ($_SESSION["userEmail"] != $newUserEmail) {
-                     
-                    if (USER::checkEMailIfUnique($conn, $_SESSION["userID"], $newUserEmail)) {
-                        USER::saveNewUserEmail($conn, $newUserEmail, $_SESSION["userID"]);
-                        echo "E-mail użytkownika została zmieniony na " . $newUserEmail;
-                    } else {
-                        echo "Ten e-mail jest już używany przez innego użytkownika";
-                    }
-                 }
-                 
-                 if ($_SESSION['userPassword'] != $newUserPassword && !empty($newUserPassword)) {
-                     USER::saveNewUserPassword($conn, $newUserPassword, $_SESSION["userID"]);
-                     echo "Hasło zostało zmienione";
-                 }
-                     
-            }
-            ?>
-            
-        </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+<?php
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    
+    $newUserName = $_POST['userName'];
+    $newUserEmail = $_POST['userEmail'];
+    $newUserPassword = $_POST['userPassword'];
 
+    if ($_SESSION["userName"] != $newUserName) {
+
+       if (USER::checkUsernameIfUnique($conn, $_SESSION["userID"], $newUserName)) {
+           USER::saveNewUsername($conn, $newUserName, $_SESSION["userID"]);
+           echo "Nazwa użytkownika została zmieniona na " . $newUserName;
+       } else {
+           echo "Ta nazwa użytkownika już istnieje<br>";
+       }
+    }
+
+     if ($_SESSION["userEmail"] != $newUserEmail) {
+
+       if (USER::checkEMailIfUnique($conn, $_SESSION["userID"], $newUserEmail)) {
+           USER::saveNewUserEmail($conn, $newUserEmail, $_SESSION["userID"]);
+           echo "E-mail użytkownika została zmieniony na " . $newUserEmail;
+       } else {
+           echo "Ten e-mail jest już używany przez innego użytkownika";
+       }
+    }
+
+    if ($_SESSION['userPassword'] != $newUserPassword && !empty($newUserPassword)) {
+        USER::saveNewUserPassword($conn, $newUserPassword, $_SESSION["userID"]);
+        echo "Hasło zostało zmienione";
+    }
+}
+
+?>
+
+            </div>
         </div>
     </div>
-</div>
-
 </body>
 </html>
