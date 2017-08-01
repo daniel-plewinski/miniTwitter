@@ -1,5 +1,13 @@
 <?php
 
+/**
+* File of miniTwitter
+*
+* @author     	Daniel Plewinski
+* @author  		email: dplewinski@gmail.com
+* @link     	https://github.com/daniel-plewinski/miniTwitter
+*/
+
 session_start();
 
 if(isset($_SESSION["userID"])){

@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+/**
+* File of miniTwitter
+*
+* @author     	Daniel Plewinski
+* @author  		email: dplewinski@gmail.com
+* @link     	https://github.com/daniel-plewinski/miniTwitter
+*/
+
 if(!isset($_SESSION["userID"])){
     header("location: twitter_login.php");
     die();

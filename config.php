@@ -1,5 +1,14 @@
 <?php
 
+/**
+* File of miniTwitter
+*
+* @author     	Daniel Plewinski
+* @author  		email: dplewinski@gmail.com
+* @link     	https://github.com/daniel-plewinski/miniTwitter
+*/
+
+
 $host = "localhost";
 $user = "root";
 $pass = "1234";
